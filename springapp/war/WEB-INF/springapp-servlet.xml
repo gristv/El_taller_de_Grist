@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:context="http://www.springframework.org/schema/context"
+      xsi:schemaLocation="
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+      http://www.springframework.org/schema/context 
+      http://www.springframework.org/schema/context/spring-context-2.5.xsd">		
+
+  <!-- the application context definition for the springapp DispatcherServlet -->
+  
+ 	<context:annotation-config/>
+ 	<context:component-scan base-package="springapp" />
+<!-- 
+	Añadimos la entrada bean para 'messageSource' que nos permitira recuperar mensajes desde la 
+	ubicacion ('messages.properties') en war/WEB-INF/classes. 
+	Permite recuperar mensajes. Ver <fmt:message/> que hemos añadido a 'hello.jsp'.
+ -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
+    </bean>
+    
+  <!--
+	Este archivo contiene las definiciones de beans (POJO's) usados por DispatcherServlet. Este 
+	archivo es el WebApplicationContext donde situaremos todos los componentes web. El nombre de este 
+	archivo esta determinado por el valor del elemento <servlet-name/> en 'web.xml', con la 
+	palabra '-servlet' agregada al final (por lo tanto 'springapp-servlet.xml'). Esta es la convencion 
+	estardar para nombrar archivos del framework Spring MVC. Ahora añade una definicion de bean 
+	llamada '/hello.htm' y especifica su clase como springapp.web.HelloController. Esto define el controlador 
+	que nuestra aplicacion usara para dar servicio a solicitudes con el correspondiente mapeo de 
+	URL de '/hello.htm'. El framework Spring MVC usa una clase que implementa la interface HandlerMapping 
+	para definir el mapeo entre la URL solicitada y el objeto que va a manejar la solicitud (manejador). Al 
+	contrario que DispatcherServlet, HelloController es el encargado de manejar las solicitudes para 
+	una pagina concreta del sitio web, y es conocido como el 'Controlador de Pagina' (Fowler). El HandlerMapping 
+	por defecto que DispatcherServlet usa es BeanNameUrlHandlerMapping; esta clase usa el nombre del bean 
+	para mapear la URL de la solicitud, por lo que DispatcherServlet conocera que controlador debe ser 
+	invocado para manejar diferentes URLs.
+  -->
+
+    <bean name="/hello.htm,/cargaProducto.htm,/cargaNewProducto.htm,/saveProduct.htm,/saveNewProduct.htm" class="springapp.web.InventoryController">
+  		<property name="productManager" ref="productManager"/>
+		<property name="validators">
+			<bean class="springapp.service.NewProductoValidator"/>
+		</property>
+  	</bean>
+  
+  <!-- 
+  	La clase PriceIncrease es un JavaBean muy sencillo que solamente contiene una propiedad
+	con su correspondientes metodos getter y setter. Este es el objeto que el formulario
+	rellenara y desde el que nuestra logica de negocio extraera el procentaje de incremento
+	que queremos aplicar a los precios.
+	
+	La clase PriceIncreaseValidator toma el control despues de que el usuario pulse el
+	boton submit. Los valores introducidos en el formulario seran guardados en el objeto de
+	comando por el framework. El metodo validate(..) es llamado en el objeto de
+	comando PriceIncrease. Ademas un objeto que contiene cualquier error que se haya
+	producido al completar el formulario es pasado tambien.
+  
+    Por último definimos el formulario y su controlador.
+    Definimos los objetos a inyectar en el
+	controlador del formulario mediante las propiedades commandClass y validator. Tambien
+	especificamos dos vistas, formView que es usada por el formulario, y successView, a la
+	que iremos despues de procesar satisfactoriamente el formulario. La ultima vista puede
+	ser de dos tipos. Puede ser una referencia a una vista normal, que es enviada a uno de
+	nuestras paginas JSP. Una desventaja de esta aproximacion es que si el usuario recarga
+	la pagina, los datos del formulario se enviaran de nuevo, y podrias terminar
+	incrementando varias el porcentaje. Una manera alternativa es usar redirect, donde la
+	respuesta se envia de vuelta al navegador del usuario informandole que debe
+	redireccionar a una nueva URL. Esta URL no puede ser una de nuestras paginas JSP,
+	puesto que estan ocultas (en WEB-INF) y no es posible su acceso directo. Tiene que ser
+	una URL alcanzable desde el exterior. Hemos elegido usar 'hello.htm' como URL para
+	redirect. Esta URL esta mapeada a la pagina 'hello.jsp', que funcionara
+	correctamente.
+  -->
+
+  <!--  Navegación a la página de enlaces -->
+  	<bean name="/enlaces.htm,/diferencias.htm" class="springapp.web.EnlacesController">
+  	</bean>
+  
+ <!--
+  	El controlador puede espedicificar la ruta completa a la vista (return new ModelAndView("WEB-INF/jsp/hello.jsp", "now", now);), lo cual 
+  	crea una dependencia innecesaria entre el controlador y la vista. Idealmente queremos referirnos a la vista 
+  	usando un nombre logico, permitiendonos intercambiar la vista sin tener que cambiar el controlador. Puedes 
+  	crear este mapeo en un archivo de propiedades si estas usando ResourceBundleViewResolver y SimpleUrlHandlerMapping. 
+  	Para el mapeo basico entre una vista y una localizacion, simplemente configura un prefijo y sufijo en 
+  	InternalResourceViewResolver. Esta solucion es la que vamos a implantar ahora, por lo que modificamos 
+  	'springapp-servlet.xml' y declaramos una entrada 'viewResolver'. Eligiendo JstlView tendremos la oportunidad 
+  	de usar JSTL en combinacion con paquetes de mensajes de idioma, los cuales nos ofreceran soporte para la 
+  	internacionalizacion de la aplicacion. 
+  	El resultado tras añadir el viewResolver será algo así: 
+  -->
+  	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>        
+  	</bean>
+ 
+</beans>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" >
+         
+         <!--
+         	Vamos a definir un DispatcherServlet (tambien llamado 'Controlador Frontal' (Crupi et al)). Su misión 
+         	será controlar hacia donde son enrutadas todas nuestras solicitudes basandose en informacion que 
+         	introduciremos posteriormente. La definicion del servlet tendrá como acompañante una entrada <servlet-mapping/> 
+         	que mapea las URL que queremos que apunten a nuestro servlet. Hemos decidido permitir que cualquier 
+         	URL con una extension de tipo '.htm' sea enrutada hacia el servlet 'springapp' (DispatcherServlet).
+         -->
+         
+         <servlet>
+    		<servlet-name>springapp</servlet-name>
+    		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    		<load-on-startup>1</load-on-startup>
+  		</servlet>
+  		
+  		<servlet-mapping>
+    		<servlet-name>springapp</servlet-name>
+    		<url-pattern>*.htm</url-pattern>
+  		</servlet-mapping>
+
+		<!-- 
+			Configuramos la capa de servicio y lo haremos en nuestro propio archivo de contexto de aplicacion. Este archivo se llama 
+			'applicationContext.xml' y sera cargado mediante un servlet listener que definiremos en 'web.xml'. Todos los bean configurados 
+			en este nuevo contexto de aplicacion estaran disponibles desde cualquier contexto del servlet (springapp-servlet.
+			Ver la diferencia entre entre applicationContext.xml y dispatcher-servlet.xml
+		-->
+		<listener>
+    		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  		</listener>
+
+		<!-- Página de inicio -->
+  		<welcome-file-list>
+    		<welcome-file>index.jsp</welcome-file>
+  		</welcome-file-list>
+  		
+  		<!-- Configuración log4j -->
+  		<context-param>
+        	<param-name>log4jConfigLocation</param-name>
+        	<param-value>/WEB-INF/resource/log4j.properties</param-value>
+    	</context-param>
+
+     	<listener>
+       		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    	</listener>
+    	
+    	<!--  Configuración de la libreria de etiquetas 'spring-form.tld' suministrada con Spring Framework-->
+    	<jsp-config>
+			<taglib>
+				<taglib-uri>/spring</taglib-uri>
+				<taglib-location>/WEB-INF/tld/spring-form.tld</taglib-location>
+			</taglib>
+		</jsp-config>
+
+</web-app>
