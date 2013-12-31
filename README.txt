@@ -3,7 +3,7 @@ El_taller_de_Grist
 
 Vamos a utilizar este repositorio para practicar con Github subiendo los proyectos con los que estamos trabajando.
 
-Para inciarme en Git / Github he seguido el siguiente <a href="http://www.youtube.com/watch?v=nN9NQRSG7iU&list=PL-RTXOrSoE6RP5wLjn81xFhKAzwThmr1m">podcast</a> y el <a href="http://git-scm.com/book/es-ni">manual</a> al que hacen referencia en el video.
+Para inciarme en Git / Github he seguido el siguiente &lt;a href="http://www.youtube.com/watch?v=nN9NQRSG7iU&list=PL-RTXOrSoE6RP5wLjn81xFhKAzwThmr1m"&gt;podcast&lt;/a&gt; y el <a href="http://git-scm.com/book/es-ni">manual</a> al que hacen referencia en el video.
 
 Dejo constancia de los comandos que permiten subir un repositorio local a Github:
 
