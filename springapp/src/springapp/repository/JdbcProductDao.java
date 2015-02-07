@@ -17,7 +17,7 @@ import springapp.domain.Product;
  * 
  * Spring dispone de un framework de abstraccion JDBC que vamos a usar. La mayor diferencia 
  * entre usar JDBC directamente y el framework JDBC de Spring es que no tienes que preocuparte 
- * de abrir o cerrar conexiones, o cualquier código similar. Todo esto es manejado de manera 
+ * de abrir o cerrar conexiones, o cualquier cï¿½digo similar. Todo esto es manejado de manera 
  * automatica. Otra ventaja es que no tienes que capturar ninguna excepcion, a menos que 
  * quieras. Spring envuelve todas las excepciones de tipo SQLException en un familia de excepciones 
  * de tipo unchecked que heredan de DataAccessException. Si lo deseas, puedes capturar esta excepcion, 
@@ -29,6 +29,8 @@ import springapp.domain.Product;
  * 
  * Puesto que estamos extendiendo SimpleJdbcSupport disponemos de un objeto SimpleJdbcTemplate preparado 
  * y listo para usar. Este objeto es accedido llamando al metodo getSimpleJdbcTemplate().
+ * 
+ * Comentario de prueba para git
  */
 
 public class JdbcProductDao extends SimpleJdbcDaoSupport implements ProductDao {
@@ -37,7 +39,7 @@ public class JdbcProductDao extends SimpleJdbcDaoSupport implements ProductDao {
 	static final Logger logger = Logger.getLogger(JdbcProductDao.class.getName());
 	
 	/**
-	 * El método, getProductList() ejecuta una consulta usando SimpleJdbcTemplate. Para ello incluimos en el una 
+	 * El mï¿½todo, getProductList() ejecuta una consulta usando SimpleJdbcTemplate. Para ello incluimos en el una 
 	 * sentencia SQL y una clase que pueda manejar el mapeo entre el el ResultSet y la clase Product. En nuestro caso 
 	 * este mapeador es una clase llamada ProductMapper que hemos definido como una clase interna del DAO. Por supuesto 
 	 * que esta clase no sera usada fuera del DAO por lo que hacerla interna es una buena solucion.

@@ -2,7 +2,9 @@ package springapp.domain;
 
 import java.io.Serializable;
 
-/** Esto es una prueba */
+/** 
+ * Esto es una prueba para el git 
+ */
 @SuppressWarnings("serial")
 public class Product implements Serializable{
 
